@@ -1,0 +1,13 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+
+<suite name="AdditionSuite">
+
+    <test name="AdditionTest">
+
+        <classes>
+            <class name="AdditionTest"/>
+        </classes>
+
+    </test>
+
+</suite>
