@@ -1,53 +1,66 @@
-import org.junit.jupiter.api.Test;
+import org.testng.annotations.Test;
+import org.testng.Assert;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import io.github.bonigarcia.wdm.WebDriverManager;
+import org.openqa.selenium.chrome.ChromeOptions;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import io.github.bonigarcia.wdm.WebDriverManager;
 
 public class AdditionTest {
 
     @Test
     public void testAddition() throws InterruptedException {
 
-        // Automatically download and configure ChromeDriver
+        // Setup ChromeDriver automatically
         WebDriverManager.chromedriver().setup();
 
-        // Launch Chrome browser
-        WebDriver driver = new ChromeDriver();
+        // Chrome options for Jenkins / CI environments
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--headless=new");
+        options.addArguments("--no-sandbox");
+        options.addArguments("--disable-dev-shm-usage");
 
-        // Open the local HTML file
-        driver.get("file:///C:/Users/5023166/addition-webapp/src/main/webapp/index.html");
+        WebDriver driver = new ChromeDriver(options);
 
-        // Locate input fields
-        WebElement num1 = driver.findElement(By.id("num1"));
-        WebElement num2 = driver.findElement(By.id("num2"));
+        try {
 
-        // Locate Add button
-        WebElement button = driver.findElement(By.tagName("button"));
+            // Open local HTML page
+            driver.get("file:///C:/Users/5023166/addition-webapp/src/main/webapp/index.html");
 
-        // Enter numbers
-        num1.sendKeys("5");
-        num2.sendKeys("7");
+            // Locate input fields
+            WebElement num1 = driver.findElement(By.id("num1"));
+            WebElement num2 = driver.findElement(By.id("num2"));
 
-        // Click Add button
-        button.click();
+            // Locate Add button
+            WebElement button = driver.findElement(By.tagName("button"));
 
-        // Wait for result to appear
-        Thread.sleep(15000);
+            // Enter numbers
+            num1.sendKeys("5");
+            num2.sendKeys("7");
 
-        // Locate result element
-        WebElement result = driver.findElement(By.id("result"));
+            // Click Add button
+            button.click();
 
-        // Capture result text
-        String text = result.getText();
+            // Wait for result
+            Thread.sleep(3000);
 
-        // Validate output
-        assertEquals("Result: 12", text);
+            // Get result element
+            WebElement result = driver.findElement(By.id("result"));
 
-        // Close browser
-        driver.quit();
+            // Capture result text
+            String text = result.getText();
+
+            // TestNG assertion
+            Assert.assertEquals(text, "Result: 12");
+
+        } finally {
+
+            // Close browser safely
+            driver.quit();
+
+        }
     }
 }
