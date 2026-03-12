@@ -1,0 +1,40 @@
+import org.junit.jupiter.api.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import io.github.bonigarcia.wdm.WebDriverManager;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+public class AdditionTest {
+
+    @Test
+    public void testAddition() throws InterruptedException {
+
+        WebDriverManager.chromedriver().setup();
+
+        WebDriver driver = new ChromeDriver();
+
+        driver.get("file:///home/ved/addition/index.html");
+
+        WebElement num1 = driver.findElement(By.id("num1"));
+        WebElement num2 = driver.findElement(By.id("num2"));
+        WebElement button = driver.findElement(By.tagName("button"));
+
+        num1.sendKeys("5");
+        num2.sendKeys("7");
+
+        button.click();
+
+        Thread.sleep(1000);
+
+        WebElement result = driver.findElement(By.id("result"));
+
+        String text = result.getText();
+
+        assertEquals("Result: 12", text);
+
+        driver.quit();
+    }
+}
